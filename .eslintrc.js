@@ -8,7 +8,7 @@ const prettierOptions = JSON.parse(
 module.exports = {
   parser: 'babel-eslint',
   extends: ['airbnb', 'prettier', 'prettier/react'],
-  plugins: ['prettier', 'redux-saga', 'react', 'jsx-a11y'],
+  plugins: ['prettier', 'redux-saga', 'react', 'react-hooks', 'jsx-a11y'],
   env: {
     jest: true,
     browser: true,
@@ -23,10 +23,9 @@ module.exports = {
     },
   },
   rules: {
-    'prettier/prettier': ['error', prettierOptions],
+    'prettier/prettier': 0,
     'arrow-body-style': [2, 'as-needed'],
     'class-methods-use-this': 0,
-    'comma-dangle': [2, 'always-multiline'],
     'import/imports-first': 0,
     'import/newline-after-import': 0,
     'import/no-dynamic-require': 0,
@@ -35,14 +34,9 @@ module.exports = {
     'import/no-unresolved': 2,
     'import/no-webpack-loader-syntax': 0,
     'import/prefer-default-export': 0,
-    indent: [
-      2,
-      2,
-      {
-        SwitchCase: 1,
-      },
-    ],
+    indent: 0,
     'jsx-a11y/aria-props': 2,
+    'jsx-a11y/no-static-element-interactions': 0,
     'jsx-a11y/heading-has-content': 0,
     'jsx-a11y/label-has-associated-control': [
       2,
@@ -61,16 +55,18 @@ module.exports = {
     'newline-per-chained-call': 0,
     'no-confusing-arrow': 0,
     'no-console': 1,
-    'no-unused-vars': 2,
+    'no-unused-vars': 0,
     'no-use-before-define': 0,
     'prefer-template': 2,
     'react/destructuring-assignment': 0,
+    'react-hooks/rules-of-hooks': 'error',
     'react/jsx-closing-tag-location': 0,
     'react/forbid-prop-types': 0,
-    'react/jsx-first-prop-new-line': [2, 'multiline'],
+    'react/jsx-first-prop-new-line': 0,
     'react/jsx-filename-extension': 0,
     'react/jsx-no-target-blank': 0,
     'react/jsx-uses-vars': 2,
+    'react/prefer-es6-class': 1,
     'react/require-default-props': 0,
     'react/require-extension': 0,
     'react/self-closing-comp': 0,
@@ -78,6 +74,10 @@ module.exports = {
     'redux-saga/no-yield-in-race': 2,
     'redux-saga/yield-effects': 2,
     'require-yield': 0,
+    'react/no-array-index-key': 0,
+    'spaced-comment': 0,
+    'object-shorthand': 0,
+    'no-param-reassign': 0
   },
   settings: {
     'import/resolver': {
