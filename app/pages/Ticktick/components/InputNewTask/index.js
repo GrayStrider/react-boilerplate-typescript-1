@@ -33,7 +33,7 @@ function InputNewTask(props) {
   return (
     <Wrapper buttonBarActive={buttonBarActive}>
       <div
-role="presentation" onClick={() => toggleButtonBar(true)}>
+        role='presentation' onClick={() => toggleButtonBar(true)}>
         <Input
           placeholder={placeholder}
           value={inputValue}
@@ -44,41 +44,39 @@ role="presentation" onClick={() => toggleButtonBar(true)}>
       </div>
 
       <InputButtonBar
-active={buttonBarActive} className="inputButtonBar">
+        active={buttonBarActive} className='inputButtonBar'>
         <Popup
-trigger={
+            trigger = {<Icon name="calendar alternate outline" />}
+            content='popup content'
+            on='click'
+            horizontalOffset={12}
+            verticalOffset={5}
+            />
 
-          trigger={<Icon name="calendar alternate outline" />}
-        content='popup content'
-        on='click'
-          horizontalOffset={12}
-          verticalOffset={5}
-        />
+            <Icon name="exclamation circle" />
+            <Icon name='folder outline' />
+            </InputButtonBar>
+            </Wrapper>
+            );
+            }
 
-        <Icon name="exclamation circle" />
-        <Icon name="folder outline" />
-      </InputButtonBar>
-    </Wrapper>
-  );
-}
+            InputNewTask.propTypes = {
+            selectedList: PropTypes.object,
+            addTask: PropTypes.func,
+            };
 
-InputNewTask.propTypes = {
-  selectedList: PropTypes.object,
-  addTask: PropTypes.func,
-};
+            const mapStateToProps = state => ({
+            selectedList: state.ticktick.lists.selectedList,
+            });
 
-const mapStateToProps = state => ({
-  selectedList: state.ticktick.lists.selectedList,
-});
+            const mapDispatchToProps = dispatch => ({
+            addTask: params => dispatch(addTask(params)),
+            });
 
-const mapDispatchToProps = dispatch => ({
-  addTask: params => dispatch(addTask(params)),
-});
-
-const clickOutsideConfig = {
-  handleClickOutside: () => InputNewTask.handleClickOutside,
-};
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(onClickOutside(InputNewTask, clickOutsideConfig));
+            const clickOutsideConfig = {
+            handleClickOutside: () => InputNewTask.handleClickOutside,
+            };
+            export default connect(
+            mapStateToProps,
+            mapDispatchToProps,
+            )(onClickOutside(InputNewTask, clickOutsideConfig));

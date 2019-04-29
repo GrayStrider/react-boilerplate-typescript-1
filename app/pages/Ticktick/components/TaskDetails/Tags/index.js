@@ -27,7 +27,7 @@ function Tags(props) {
 
   const handleChange = (e, { value }) =>
     taskTags.length < value.length
-      ? addTaskToListAction({
+      ? addTaskToListAction(
         {
           taskID: taskID,
           type: 'tags',
@@ -35,7 +35,7 @@ function Tags(props) {
         },
       )
 
-      : deleteTaskFromListAction({
+      : deleteTaskFromListAction(
         {
           taskID: taskID,
           type: 'tags',

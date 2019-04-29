@@ -8,13 +8,11 @@ import Scrollbar from '../Scrollbar';
 
 function TaskList(props) {
   const { filteredTasks } = props;
-  const ListWrapper = (
-    <>
-      {map(filteredTasks(), task => (
-        <Task taskID={task.taskID} key={task.taskID} />
-        ))
+  const ListWrapper = <>
+    {map(filteredTasks(), task => (
+      <Task taskID={task.taskID} key={task.taskID}/>
+    ))}
     </>
-  );
   return (
     <Wrapper>
       <Scrollbar style={{ height: '100%' }} autoHide>
@@ -34,10 +32,12 @@ const mapStateToProps = state => ({
     forEach(
       state.ticktick.insertableLists[state.ticktick.lists.selectedList.type][
         state.ticktick.lists.selectedList.listID
-      ].tasks,
-    (taskID) => {filtered[taskID] =
-        state.ticktick.tasks[taskID]}
-    )
+        ].tasks,
+      (taskID) => {
+        filtered[taskID] =
+          state.ticktick.tasks[taskID];
+      },
+    );
     return filtered;
   },
 
