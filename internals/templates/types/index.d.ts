@@ -1,11 +1,11 @@
 import { Reducer, Store } from 'redux';
 import { RouterState } from 'connected-react-router';
-import { ILanguageProviderProps } from 'containers/LanguageProvider';
+import { ContainerState as LanguageProviderState } from 'containers/LanguageProvider/types';
 
-export interface LifeStore extends Store<{}> {
-  injectedReducers?: any;
-  injectedSagas?: any;
-  runSaga(saga: () => IterableIterator<any>, args: any): any;
+export interface LifeStore extends Store {
+  injectedReducers: any;
+  injectedSagas: any;
+  runSaga(saga: (() => IterableIterator<any>) | undefined, args: any | undefined): any;
 }
 
 export interface InjectReducerParams {
@@ -22,7 +22,7 @@ export interface InjectSagaParams {
 // Your root reducer type, which is your redux state types also
 export interface ApplicationRootState {
   readonly router: RouterState;
-  readonly language: ILanguageProviderProps;
+  readonly language: LanguageProviderState;
   // for testing purposes
   readonly test: any;
 }

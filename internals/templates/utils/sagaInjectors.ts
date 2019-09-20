@@ -6,34 +6,46 @@ import isString from 'lodash/isString';
 
 import checkStore from './checkStore';
 import { DAEMON, ONCE_TILL_UNMOUNT, RESTART_ON_REMOUNT } from './constants';
-import { LifeStore } from 'types';
+import { InjectedStore } from 'types';
 
 const allowedModes = [RESTART_ON_REMOUNT, DAEMON, ONCE_TILL_UNMOUNT];
 
 const checkKey = (key: string) =>
-  invariant(isString(key) && !isEmpty(key), '(app/utils...) injectSaga: Expected `key` to be a non empty string');
+  invariant(
+    isString(key) && !isEmpty(key),
+    '(app/utils...) injectSaga: Expected `key` to be a non empty string',
+  );
 
 interface SagaDescriptor {
-  saga: () => IterableIterator<any>;
-  mode: string | undefined;
+  saga?: () => IterableIterator<any>;
+  mode?: string | undefined;
 }
 const checkDescriptor = (descriptor: SagaDescriptor) => {
   const shape = {
     saga: isFunction,
-    mode: (mode: SagaDescriptor['mode']) => isString(mode) && allowedModes.includes(mode),
+    mode: (mode: SagaDescriptor['mode']) =>
+      isString(mode) && allowedModes.includes(mode),
   };
-  invariant(conformsTo(descriptor, shape), '(app/utils...) injectSaga: Expected a valid saga descriptor');
+  invariant(
+    conformsTo(descriptor, shape),
+    '(app/utils...) injectSaga: Expected a valid saga descriptor',
+  );
 };
 
-export function injectSagaFactory(store: LifeStore, isValid: boolean) {
-  return function injectSaga(key: string, descriptor: SagaDescriptor, args: any) {
+export function injectSagaFactory(store: InjectedStore, isValid: boolean = false) {
+  // tslint:disable-next-line: only-arrow-functions
+  return function injectSaga(
+    key: string,
+    descriptor: SagaDescriptor = {},
+    args?: any,
+  ) {
     if (!isValid) {
       checkStore(store);
     }
 
     const newDescriptor = {
       ...descriptor,
-      mode: descriptor.mode || RESTART_ON_REMOUNT,
+      mode: descriptor.mode || DAEMON,
     };
     const { saga, mode } = newDescriptor;
 
@@ -51,18 +63,20 @@ export function injectSagaFactory(store: LifeStore, isValid: boolean) {
       }
     }
 
-    if (!hasSaga || (hasSaga && mode !== DAEMON && mode !== ONCE_TILL_UNMOUNT)) {
-      /* eslint-disable no-param-reassign */
+    if (
+      !hasSaga ||
+      (hasSaga && mode !== DAEMON && mode !== ONCE_TILL_UNMOUNT)
+    ) {
       store.injectedSagas[key] = {
         ...newDescriptor,
         task: store.runSaga(saga, args),
       };
-      /* eslint-enable no-param-reassign */
     }
   };
 }
 
-export function ejectSagaFactory(store: LifeStore, isValid: boolean) {
+export function ejectSagaFactory(store: InjectedStore, isValid: boolean = false) {
+  // tslint:disable-next-line: only-arrow-functions
   return function ejectSaga(key: string) {
     if (!isValid) {
       checkStore(store);
@@ -72,19 +86,19 @@ export function ejectSagaFactory(store: LifeStore, isValid: boolean) {
 
     if (Reflect.has(store.injectedSagas, key)) {
       const descriptor = store.injectedSagas[key];
-      if (descriptor.mode !== DAEMON) {
+      if (descriptor.mode && descriptor.mode !== DAEMON) {
         descriptor.task.cancel();
         // Clean up in production; in development we need `descriptor.saga` for hot reloading
         if (process.env.NODE_ENV === 'production') {
           // Need some value to be able to detect `ONCE_TILL_UNMOUNT` sagas in `injectSaga`
-          store.injectedSagas[key] = 'done'; // eslint-disable-line no-param-reassign
+          store.injectedSagas[key] = 'done';
         }
       }
     }
   };
 }
 
-export default function getInjectors(store: LifeStore) {
+export function getInjectors(store: InjectedStore) {
   checkStore(store);
 
   return {

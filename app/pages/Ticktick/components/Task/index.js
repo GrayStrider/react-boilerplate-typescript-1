@@ -37,7 +37,7 @@ function Task(props) {
       onClick={() => selectTaskAction(taskID)}
       taskIsSelected={taskIsSelected}
     >
-      ><Checkbox taskID={taskID} />
+      <Checkbox taskID={taskID} />
       <input
         ref={inputRef}
         spellCheck={false}

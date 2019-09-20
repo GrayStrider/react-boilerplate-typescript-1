@@ -3,13 +3,13 @@ import isEmpty from 'lodash/isEmpty';
 import isFunction from 'lodash/isFunction';
 import isString from 'lodash/isString';
 
-
 import checkStore from './checkStore';
 import createReducer from '../reducers';
-import { LifeStore } from 'types';
+import { InjectedStore } from 'types';
 import { Reducer } from 'redux';
 
-export function injectReducerFactory(store: LifeStore, isValid: boolean) {
+export function injectReducerFactory(store: InjectedStore, isValid: boolean = false) {
+  // tslint:disable-next-line: only-arrow-functions
   return function injectReducer(key: string, reducer: Reducer<object>) {
     if (!isValid) {
       checkStore(store);
@@ -29,12 +29,12 @@ export function injectReducerFactory(store: LifeStore, isValid: boolean) {
       return;
     }
 
-    store.injectedReducers[key] = reducer; // eslint-disable-line no-param-reassign
+    store.injectedReducers[key] = reducer;
     store.replaceReducer(createReducer(store.injectedReducers));
   };
 }
 
-export default function getInjectors(store: LifeStore) {
+export function getInjectors(store: InjectedStore) {
   checkStore(store);
 
   return {

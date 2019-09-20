@@ -7,6 +7,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CircularDependencyPlugin = require('circular-dependency-plugin');
 
+// 1. import default from the plugin module
 const createStyledComponentsTransformer = require('typescript-plugin-styled-components')
   .default;
 
@@ -50,14 +51,13 @@ module.exports = require('./webpack.base.babel')({
   ],
 
   tsLoaders: [
+    // Babel also have typescript transpiler. Uncomment this if you prefer and comment-out ts-loader
+    // { loader: 'babel-loader' },
     {
-      loader: 'awesome-typescript-loader',
+      loader: 'ts-loader',
       options: {
-        useBabel: true,
-        babelOptions: {
-          babelrc: true,
-        },
-        useCache: true,
+        transpileOnly: true, // fork-ts-checker-webpack-plugin is used for type checking
+        logLevel: 'info',
         getCustomTransformers: () => ({
           before: [styledComponentsTransformer],
         }),
