@@ -7,7 +7,15 @@ const prettierOptions = JSON.parse(
 
 module.exports = {
   parser: '@typescript-eslint/parser',
-  extends: ['plugin:@typescript-eslint/recommended', 'eslint:all'],
+  'extends': [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript",
+  ],
   plugins: ['@typescript-eslint', 'react', 'react-hooks', 'redux-saga', 'jsx-a11y', 'import'],
   env: {
     jest: true,
@@ -19,6 +27,8 @@ module.exports = {
     ecmaFeatures: {
       jsx: true,
     },
+    project: './tsconfig.json',
+    tsconfigRootDir: __dirname,
   },
   rules: {
 
@@ -26,6 +36,7 @@ module.exports = {
      * Reviewed
      */
     '@typescript-eslint/no-empty-interface': 'off',
+    '@typescript-eslint/interface-name-prefix': 'off',
 
     '@typescript-eslint/member-delimiter-style': 'off',
     '@typescript-eslint/no-unused-vars': 'off',
@@ -62,14 +73,16 @@ module.exports = {
     'init-declarations': 'off',
 
     'no-shadow': ['warn', { 'allow': ['App'] }],
-    'space-before-function-paren': "off",
+    'space-before-function-paren': 'off',
+
+
+    'import/no-unresolved': 1,
+
 
     /**
      * Fixed by editor
      */
     'no-trailing-spaces': 'off',
-
-
     /**
      * ???
      */
@@ -79,7 +92,6 @@ module.exports = {
     'import/no-dynamic-require': 0,
     'import/no-extraneous-dependencies': 0,
     'import/no-named-as-default': 0,
-    'import/no-unresolved': 2,
     'import/no-webpack-loader-syntax': 0,
     'import/prefer-default-export': 1,
     'jsx-a11y/aria-props': 2,
