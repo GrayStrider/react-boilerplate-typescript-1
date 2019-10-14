@@ -32,9 +32,10 @@ const stateSelector = createStructuredSelector({
 export default function RepoListItem({ item }: Props) {
   const { currentUser } = useSelector(stateSelector);
   let nameprefix = '';
-
+  const forkLabel = item.fork ? "[Fork] " : '';
   // If the repository is owned by a different person than we got the data for
   // it's a fork and we should show the name of the owner
+  // --TODO Doesn't work
   if (item.owner.login !== currentUser) {
     nameprefix = `${item.owner.login}/`;
   }
@@ -43,7 +44,7 @@ export default function RepoListItem({ item }: Props) {
   const content = (
     <Wrapper>
       <RepoLink href={item.html_url} target="_blank">
-        {nameprefix + item.name}
+        {forkLabel + nameprefix + item.name}
       </RepoLink>
       <IssueLink href={`${item.html_url}/issues`} target="_blank">
         <IssueIcon />
