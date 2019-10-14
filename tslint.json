@@ -5,7 +5,9 @@
       "severity": "warn"
     },
     "jsx-wrap-multiline": false,
-    "no-unsafe-any": true,
+    "no-unsafe-any": {
+      "severity": "warn"
+    },
     "no-empty-interface": false,
     "jsx-no-lambda": false,
     "semicolon": [false, "always", "ignore-bound-class-methods"],
